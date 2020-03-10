@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.cms.dao.extend.ArticleExtendMapper">
+  <resultMap id="ArticleExtendBaseResultMap" type="com.briup.cms.bean.extend.ArticleExtend" extends="com.briup.cms.dao.ArticleMapper.BaseResultMap">
+      <association property="category" column="category_id" select="com.briup.cms.dao.CategoryMapper.selectByPrimaryKey"></association>
+        <collection property="comments" column="id" select="com.briup.cms.dao.extend.CommentsExtendMapper.selectByArticleId"></collection>
+  </resultMap>
+  <select id="selectAll" resultMap="ArticleExtendBaseResultMap">
+    select  *
+    from cms_article
+  </select>
+  <select id="selectById" resultType="com.briup.cms.bean.extend.ArticleExtend" resultMap="ArticleExtendBaseResultMap" parameterType="long">
+    select * from cms_article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>

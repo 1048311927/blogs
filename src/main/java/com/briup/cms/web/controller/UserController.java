@@ -1,8 +1,10 @@
 package com.briup.cms.web.controller;
 
 import com.briup.cms.Vm.UserVM;
+import com.briup.cms.bean.BaseUser;
 import com.briup.cms.bean.extend.BaseUserExtend;
 import com.briup.cms.service.Impl.BaseUserService;
+import com.briup.cms.utils.JwtTokenUtil;
 import com.briup.cms.utils.Message;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -23,22 +25,26 @@ public class UserController {
     @Autowired
     BaseUserService baseUserService;
 
-
     @PostMapping("login")
     public Message<Map<String,String>> login(@RequestBody UserVM userVM){
-        //1.认证用户的用户名和密码
-        //2.如果登录成功产生token,将token缓存起来,返回
-        //3.如果登录失败
+        // 1. 认证用户的用户名和密码
+        BaseUser user = baseUserService.login(userVM);
+        // 2. 如果登录成功产生token,将token缓存起来，返回
+        String token = JwtTokenUtil.createJWT(user.getId(), user.getUsername());
+        // 3. 如果登录失败
         Map<String,String> map = new HashMap<>();
-        map.put("token","admin-token");
+        map.put("token",token);
         return Message.success(map);
     }
 
-    @ApiOperation("通过token获得用户的基本信息")
+
+
+    @ApiOperation(value = "通过token获取用户的基本信息")
     @GetMapping("info")
     public Message<BaseUserExtend> info(String token){
-        //1.通过token获取用户信息  {id,user,gender,roles:[]}
-        BaseUserExtend baseUserExtend = baseUserService.findById(1l);
+        // 1. 通过token获取用户信息  {id,use,gender,roles:[]}
+        long id = Long.parseLong(JwtTokenUtil.getUserId(token,JwtTokenUtil.base64Secret));
+        BaseUserExtend baseUserExtend = baseUserService.findById(id);
         return Message.success(baseUserExtend);
     }
 

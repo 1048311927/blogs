@@ -8,7 +8,8 @@
   <select id="selectByUserId"  resultType="com.briup.cms.bean.BaseRole">
     select r.id,r.name
     from base_role r,base_user_role ru
-    where r.id = ru.role_id and ru.user_id = #{id}
+    where r.id = ru.role_id
+    and ru.user_id = #{id}
   </select>
   
   <select id="cascadePrivilegeFindAll" resultMap="BaseResultExtendMap">

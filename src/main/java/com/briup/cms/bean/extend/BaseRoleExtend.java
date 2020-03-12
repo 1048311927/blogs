@@ -7,6 +7,9 @@ import com.briup.cms.bean.BaseRole;
 import java.util.List;
 
 public class BaseRoleExtend extends BaseRole {
+
+
+
     private List<BasePrivilege> privileges;
 
 

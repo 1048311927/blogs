@@ -26,4 +26,17 @@
     and  r.id = #{roleId}
   </select>
 
+
+    <select id="selectByUserId" resultType="com.briup.cms.bean.BasePrivilege">
+    select p.*
+    from base_user u ,base_user_role ur, base_role r, base_role_privilege rp ,base_privilege p
+    where u.id = ur.user_id
+    and r.id = ur.role_id
+    and rp.role_id = r.id
+    and rp.privilege_id = p.id
+    and u.id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+
 </mapper>

@@ -12,4 +12,7 @@
         where id = #{id}
   </select>
 
+    <select id="selectAll" resultMap="BaseUserExtendResultMap">
+        select * from base_user;
+    </select>
 </mapper>
